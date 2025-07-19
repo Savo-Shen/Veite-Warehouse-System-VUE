@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">ruoyi-wms后台管理系统</h3>
+      <h3 class="title">帅到被人砍的后台管理系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -46,13 +46,13 @@
           :loading="loading"
           size="large"
           type="primary"
-          style="width:45%;"
+          style="width:45%; margin: 0 auto;"
           @click.prevent="handleLogin"
         >
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
         </el-button>
-        <el-button
+        <!-- <el-button
           size="large"
           type="primary"
           style="width:45%;"
@@ -62,7 +62,7 @@
         </el-button>
         <div style="float: right;" v-if="register">
           <router-link class="link-type" :to="'/register'">立即注册</router-link>
-        </div>
+        </div> -->
       </el-form-item>
     </el-form>
     <el-dialog
