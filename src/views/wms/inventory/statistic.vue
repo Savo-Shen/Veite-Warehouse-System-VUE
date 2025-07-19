@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form :model="queryParams" ref="queryRef" label-width="90px" :inline="true">
+      <el-form :model="queryParams" ref="queryRef" label-width="90px" :inline="true" @keyup.enter.native="handleQuery">
         <el-form-item class="col4" label="维度 " prop="itemId">
           <el-radio-group v-model="queryType" size="default" @change="handleSortTypeChange">
             <el-radio-button label="item">商品</el-radio-button>
@@ -72,17 +72,24 @@
               <div v-if="row.itemSku.skuCode">规格编号：{{ row.itemSku.skuCode }}</div>
             </template>
           </el-table-column>
-          <el-table-column label="仓库" prop="skuIdAndWarehouseId">
-            <template #default="{row}">
-              <div>{{ useWmsStore().warehouseMap.get(row.warehouseId)?.warehouseName }}</div>
-            </template>
-          </el-table-column>
+
         </template>
-        <el-table-column label="库存" prop="quantity" align="right">
+        <el-table-column label="单价" prop="price">
+          <template #default="{row}">
+            <el-statistic :value="row.itemSku?.sellingPrice ? Number(row.itemSku.sellingPrice) : '暂无价格'" :precision="3"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="库存" prop="quantity">
           <template #default="{ row }">
             <el-statistic :value="Number(row.quantity)" :precision="0"/>
           </template>
         </el-table-column>
+        <el-table-column label="仓库" prop="skuIdAndWarehouseId" align="right">
+          <template #default="{row}">
+            <div>{{ useWmsStore().warehouseMap.get(row.warehouseId)?.warehouseName }}</div>
+          </template>
+        </el-table-column>
+          
       </el-table>
 
       <el-row>

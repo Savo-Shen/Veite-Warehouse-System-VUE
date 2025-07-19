@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="70px">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="70px" @keyup.enter.native="handleQuery">
         <el-form-item label="订单类型" prop="orderType">
           <el-radio-group v-model="queryParams.orderType" @change="handleQuery">
             <el-radio-button
