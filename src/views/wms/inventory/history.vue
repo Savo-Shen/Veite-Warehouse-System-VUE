@@ -69,14 +69,14 @@
         <el-table-column label="操作单号" prop="orderNo"/>
         <el-table-column label="商品信息">
           <template #default="{ row }">
-            <div>{{ row.item.itemName }}</div>
-            <div v-if="row.item.itemCode">商品编号：{{ row.item.itemCode }}</div>
+            <div>{{ row.item?.itemName }}</div>
+            <div v-if="row.item?.itemCode">商品编号：{{ row.item?.itemCode }}</div>
           </template>
         </el-table-column>
         <el-table-column label="规格信息">
           <template #default="{ row }">
-            <div>{{ row.itemSku.skuName }}</div>
-            <div v-if="row.itemSku.skuCode">规格编号：{{ row.itemSku.skuCode }}</div>
+            <div>{{ row.itemSku?.skuName }}</div>
+            <div v-if="row.itemSku?.skuCode">规格编号：{{ row.itemSku?.skuCode }}</div>
           </template>
         </el-table-column>
         <el-table-column label="订单类型" align="center" width="100">
@@ -170,6 +170,8 @@ function getList() {
   }
   loading.value = true;
   listInventoryHistory(query).then(response => {
+    console.log('查询参数', query);
+    console.log('查询结果', response);
     inventoryHistoryList.value = response.rows;
     total.value = response.total;
     loading.value = false;
