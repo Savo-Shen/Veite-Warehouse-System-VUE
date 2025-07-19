@@ -4,8 +4,8 @@
       <el-form :model="queryParams" ref="queryRef" label-width="90px" :inline="true">
         <el-form-item class="col4" label="维度 " prop="itemId">
           <el-radio-group v-model="queryType" size="default" @change="handleSortTypeChange">
-            <el-radio-button label="warehouse">仓库</el-radio-button>
             <el-radio-button label="item">商品</el-radio-button>
+            <el-radio-button label="warehouse">仓库</el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item class="col4" label="仓库" prop="warehouseId">
@@ -113,10 +113,10 @@ const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
-const rowSpanArray = ref(['warehouseId', 'warehouseIdAndItemId', 'warehouseIdAndSkuId'])
+const rowSpanArray = ref(['itemId', 'skuId','skuIdAndWarehouseId'])
 
 const filterable = ref(false)
-const queryType = ref("warehouse")
+const queryType = ref("item")
 const queryParams = ref({
   pageNum: 1,
   pageSize: 10,
