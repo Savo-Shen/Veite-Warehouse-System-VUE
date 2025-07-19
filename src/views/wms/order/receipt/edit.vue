@@ -115,6 +115,11 @@
                 <div v-if="row.itemSku.barcode">条码：{{row.itemSku.barcode}}</div>
               </template>
             </el-table-column>
+            <el-table-column label="单价">
+              <template #default="{ row }">
+                <div>{{ row.itemSku.costPrice }}</div>
+              </template>
+            </el-table-column>
             <el-table-column label="数量" prop="quantity" width="180">
               <template #default="scope">
                 <el-input-number
@@ -400,6 +405,7 @@ const handleChangeQuantity = () => {
   form.value.details.forEach(it => {
     if (it.quantity) {
       sum += Number(it.quantity)
+      it.amount = it.quantity * it.itemSku.costPrice
     }
   })
   form.value.totalQuantity = sum
