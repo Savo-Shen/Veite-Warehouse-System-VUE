@@ -64,7 +64,7 @@
             <el-col :span="6">
               <div style="display: flex;align-items: start">
                 <el-form-item label="总金额" prop="totalAmount">
-                  <el-input-number style="width:100%" v-model="form.totalAmount" :precision="2" :min="0"></el-input-number>
+                  <el-input-number style="width:100%" v-model="form.totalAmount" :precision="3" :min="0"></el-input-number>
                 </el-form-item>
                 <el-button link type="primary" @click="handleAutoCalc" style="line-height: 32px">自动计算</el-button>
               </div>
@@ -131,7 +131,7 @@
                 <el-input-number
                   v-model="scope.row.amount"
                   placeholder="金额"
-                  :precision="2"
+                  :precision="3"
                   :min="0"
                   :max="2147483647"
                 ></el-input-number>

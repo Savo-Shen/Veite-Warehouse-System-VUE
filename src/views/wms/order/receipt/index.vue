@@ -103,7 +103,7 @@
                 </el-table-column>
                 <el-table-column label="金额(元)" align="right">
                   <template #default="{ row }">
-                    <el-statistic v-if="row.amount || row.amount === 0" :precision="2" :value="Number(row.amount)"/>
+                    <el-statistic v-if="row.amount || row.amount === 0" :precision="3" :value="Number(row.amount)"/>
                     <div v-else>-</div>
                   </template>
                 </el-table-column>
@@ -130,7 +130,7 @@
             </div>
             <div class="flex-space-between" v-if="row.totalAmount || row.totalAmount === 0">
               <span>金额：</span>
-              <el-statistic :value="Number(row.totalAmount)" :precision="2"/>
+              <el-statistic :value="Number(row.totalAmount)" :precision="3"/>
             </div>
           </template>
         </el-table-column>

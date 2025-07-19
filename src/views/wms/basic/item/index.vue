@@ -249,11 +249,11 @@
                 <template #default="scope">
                   <div class="flex-center">
                     <span class="mr5">成本价</span>
-                    <el-input-number :controls="false" :min="0" :precision="2" v-model="scope.row.costPrice"/>
+                    <el-input-number :controls="false" :min="0" :precision="3" v-model="scope.row.costPrice"/>
                   </div>
                   <div class="flex-center mt5">
                     <span class="mr5">销售价</span>
-                    <el-input-number :controls="false" :min="0" :precision="2" v-model="scope.row.sellingPrice"/>
+                    <el-input-number :controls="false" :min="0" :precision="3" v-model="scope.row.sellingPrice"/>
                   </div>
                 </template>
               </el-table-column>

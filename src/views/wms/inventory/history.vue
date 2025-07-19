@@ -113,7 +113,7 @@
             </div>
             <div class="flex-space-between" v-if="row.amount || row.amount === 0">
               <div>金额：</div>
-              <el-statistic :value="Number(row.amount)" :precision="2"/>
+              <el-statistic :value="Number(row.amount)" :precision="3"/>
             </div>
           </template>
         </el-table-column>
