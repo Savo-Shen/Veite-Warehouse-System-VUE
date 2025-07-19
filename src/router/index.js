@@ -83,19 +83,19 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '',
-    component: Layout,
-    redirect: '/description',
-    children: [
-      {
-        path: '/description',
-        component: () => import('@/views/index'),
-        name: 'Description',
-        meta: { title: '项目介绍', icon: 'button', affix: true }
-      }
-    ]
-  },
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   redirect: '/description',
+  //   children: [
+  //     {
+  //       path: '/description',
+  //       component: () => import('@/views/index'),
+  //       name: 'Description',
+  //       meta: { title: '项目介绍', icon: 'button', affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/system/dashboard',
     component: () => import('@/views/dashboard/dashboard'),
