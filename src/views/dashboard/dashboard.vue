@@ -616,7 +616,9 @@ function getDailyPData() {
 
 function initMap() {
   map.value = new BMapGL.Map('boardMap')
-
+  // map.value.addEventListener('click', function (e) {
+  //   console.log('点击位置坐标：', e.latlng.lng, e.latlng.lat)
+  // })
   let myIcon = new BMapGL.Icon(
     'https://szcloudpulse.com:9000/cp-portal/2023/04/27/d85f358bb44a4cf69e843acecf7b0c2c.png',
     new BMapGL.Size(23, 25),
@@ -635,9 +637,9 @@ function initMap() {
 
   // 设置中心点坐标和放大倍数
   // 以 经纬度 定位
-  let point = new BMapGL.Point(120.654617, 31.268181)
+  let point = new BMapGL.Point(118.59362783739695, 24.903409594508428)
   // let point2 = new BMapGL.Point(120.679607, 31.529649)
-  map.value.centerAndZoom(point, 10)
+  map.value.centerAndZoom(point, 14)
 
   //设置地图样式
   map.value.setMapStyleV2({ styleId: 'd9955f6e8bd01669bfd15a998f109283' })
@@ -665,14 +667,14 @@ function initMap() {
   //   closeInfoWindow(infoWindow);
   // });
 
-  let point2 = new BMapGL.Point(120.679607, 31.529649)
-  let marker2 = new BMapGL.Marker(point2, { icon: myIcon })
-  map.value.addOverlay(marker2)
-  let opts2 = {
-    width: 250,
-    height: 100,
-    title: '优胜美地生产基地'
-  }
+  // let point2 = new BMapGL.Point(120.679607, 31.529649)
+  // let marker2 = new BMapGL.Marker(point2, { icon: myIcon })
+  // map.value.addOverlay(marker2)
+  // let opts2 = {
+  //   width: 250,
+  //   height: 100,
+  //   title: '优胜美地生产基地'
+  // }
   // let infoWindow2 = new BMapGL.InfoWindow("优胜美地", opts2);
   // marker2.addEventListener("mouseover", function () {
   //   openInfoWindow(infoWindow2);
