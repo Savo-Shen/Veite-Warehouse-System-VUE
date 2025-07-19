@@ -65,27 +65,27 @@
             </template>
           </el-tree>
         </div>
-        <div style="width: 100%;position: relative">
+        <div style="width: 100%;position: relative;overflow-y: auto;">
           <div style="display: flex;align-items: start;justify-content: space-between">
             <span class="mr10" style="font-size: 18px;">商品列表</span>
             <el-button type="primary" plain icon="Plus" @click="handleAdd" class="mb10">新增商品</el-button>
           </div>
           <el-table :data="itemList" @selection-change="handleSelectionChange" :span-method="spanMethod" border empty-text="暂无商品" v-loading="loading" cell-class-name="my-cell">
-            <el-table-column label="商品信息" prop="itemId">
+            <el-table-column label="商品信息" prop="itemId" min-width="160">
               <template #default="{ row }">
                 <div>{{ row.item.itemName + (row.item.itemCode ? ('(' +  row.item.itemCode + ')') : '') }}</div>
                 <div v-if="row.item.itemBrand">{{ row.item.itemBrand ? ('品牌：' + useWmsStore().itemBrandMap.get(row.item.itemBrand)?.brandName) : '' }}</div>
                 <div v-if="row.item.itemCategory">{{ row.item.itemCategory ? ('分类：' + useWmsStore().itemCategoryMap.get(row.item.itemCategory)?.categoryName) : '' }}</div>
               </template>
             </el-table-column>
-            <el-table-column label="规格信息" prop="skuName" align="left">
+            <el-table-column label="规格信息" prop="skuName" align="left" min-width="160">
               <template #default="{ row }">
                 <div>{{ row.itemSku.skuName }}</div>
                 <div v-if="row.itemSku.skuCode">编号：{{ row.itemSku.skuCode }}</div>
                 <div v-if="row.itemSku.barcode">条码：{{ row.itemSku.barcode }}</div>
               </template>
             </el-table-column>
-            <el-table-column label="金额(元)" width="160" align="left">
+            <el-table-column label="金额(元)" width="140" align="left">
               <template #default="{ row }">
                 <div v-if="row.itemSku.costPrice" class="flex-space-between">
                   <span>成本价：</span>
@@ -97,7 +97,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="重量(kg)" width="160" align="left">
+            <el-table-column label="重量(kg)" width="140" align="left">
               <template #default="{ row }">
                 <div v-if="row.itemSku.netWeight" class="flex-space-between">
                   <span>净重：</span>
@@ -113,7 +113,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="长宽高(cm)" align="right" width="250">
+            <el-table-column label="长宽高(cm)" align="right" min-width="120">
               <template #default="{ row }">
                 <div>{{ getVolumeText(row.itemSku) }}</div>
               </template>
