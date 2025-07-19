@@ -35,6 +35,12 @@
           <div v-if="row.itemSku.barcode">条码：{{ row.itemSku.barcode }}</div>
         </template>
       </el-table-column>
+      <el-table-column label="单价">
+        <template #default="{ row }">
+          <div v-if="row.itemSku.sellingPrice">{{ row.itemSku.sellingPrice }}</div>
+          <div v-else>暂无售价</div>
+        </template>
+      </el-table-column>
       <el-table-column label="剩余库存" prop="quantity" align="right">
         <template #default="{ row }">
           <el-statistic :value="Number(row.quantity)" :precision="0"/>
