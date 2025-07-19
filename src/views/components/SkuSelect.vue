@@ -152,7 +152,8 @@ const getList = () => {
   }).then(() => toggleSelection()).finally(() => loading.value = false);
 }
 const goCreateItem = () => {
-  const data = proxy.$router.resolve({path: '/system/itemManage2', query: {openDrawer: true}})
+  // const data = proxy.$router.resolve({path: '/system/itemManage2', query: {openDrawer: true}})
+  const data = proxy.$router.resolve({path: '/basic/item', query: {openDrawer: true}})
   window.open(data.href, '_blank')
 }
 // 定义props
