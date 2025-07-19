@@ -82,7 +82,7 @@
       <el-card header="商品明细" class="mt10">
         <div class="receipt-order-content">
           <div class="flex-space-between mb8">
-            <div>
+            <!-- <div>
               <span>审批 | 一物一码：</span>
               <el-switch
                 :before-change="goSaasTip"
@@ -94,7 +94,7 @@
                 active-text="开启"
                 inactive-text="关闭"
               />
-            </div>
+            </div> -->
             <el-popover
               placement="left"
               title="提示"
