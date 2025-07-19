@@ -25,8 +25,8 @@
       </el-form>
     </el-card>
     <el-card class="mt20">
-      <div style="display: flex;align-items: start">
-        <div>
+      <div style="display: flex; align-items: stretch; min-height: 600px;">
+        <div style="height: 100%;">
           <div style="display: flex;align-items: center;justify-content: space-between">
             <span style="font-size: 18px;line-height: 18px">商品分类</span>
             <el-button class="mr10" style="font-size:12px;line-height: 14px" plain
@@ -65,7 +65,8 @@
             </template>
           </el-tree>
         </div>
-        <div style="width: 100%;position: relative;overflow-y: auto;">
+        <div style="flex: 1; display: flex; flex-direction: column; height: 100%;">
+          <div style="flex: 1; overflow-x: auto;">
           <div style="display: flex;align-items: start;justify-content: space-between">
             <span class="mr10" style="font-size: 18px;">商品列表</span>
             <el-button type="primary" plain icon="Plus" @click="handleAdd" class="mb10">新增商品</el-button>
@@ -127,6 +128,10 @@
           </el-table>
           <pagination v-show="total>0" :total="total" v-model:page="queryParams.pageNum"
                       v-model:limit="queryParams.pageSize" @pagination="getList"/>
+          </div>
+          <div>
+            <!-- 分页组件外层div，保持结构一致 -->
+          </div>
         </div>
       </div>
     </el-card>
