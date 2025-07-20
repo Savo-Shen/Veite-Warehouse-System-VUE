@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <el-form ref="registerRef" :model="registerForm" :rules="registerRules" class="register-form">
-      <h3 class="title">ruoyi-wms后台管理系统</h3>
+      <h3 class="title">威特仓库管理系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="registerForm.username"
@@ -70,7 +70,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-register-footer">
-      <span>Copyright © 2017-2024 ichengle.top 技术支持：关注“程序员诚哥”微信公众号，回复：支持</span>
+      <span>Copyright © 2024-2025 shenyifan.home.blog Savo_Shen</span>
     </div>
   </div>
 </template>
