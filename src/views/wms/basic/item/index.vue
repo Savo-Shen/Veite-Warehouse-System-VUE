@@ -546,8 +546,11 @@ const handleDeleteItemSku = async (row, index) => {
   loading.value = true;
   await delItemSku(row.id).finally(()=> loading.value = false);
   proxy?.$modal.msgSuccess("删除成功");
-  const res = await getItem(row.itemId);
-  skuForm.itemSkuList = res.data.sku
+  // const res = await getItem(row.itemId);
+  // skuForm.itemSkuList = res.data.sku
+  // 修复了不能连续删除的方式
+  const res = await listItemSku({ itemId: row.itemId });
+  skuForm.itemSkuList.splice(0, skuForm.itemSkuList.length, ...res.data);
   form.value = res.data
 }
 const collapse = (draggingNode, dropNode, type) => {
