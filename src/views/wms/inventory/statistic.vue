@@ -35,7 +35,16 @@
     </el-card>
     <el-card class="mt20">
       <div class="mb8 flex-space-between">
-        <div style="font-size: large">库存统计</div>
+        <div style="font-size: large; display: flex; align-items: center;">
+          <span>库存统计</span>
+          <el-button
+            type="text"
+            :icon="showCostPrice ? 'StarFilled' : 'Star'"
+            @click="showCostPrice = !showCostPrice"
+            style="margin-left: -8px; margin-top: -24px; color: #f7ba2a"
+            circle
+          />
+        </div>
         <el-checkbox v-model="filterable" label="过滤掉库存为0的商品" size="large" @change="handleChangeFilterZero"/>
       </div>
       <el-table :data="inventoryList" border :span-method="spanMethod"
@@ -74,9 +83,14 @@
           </el-table-column>
 
         </template>
-        <el-table-column label="单价（售价）" prop="price">
+        <el-table-column label="单价（售价）" prop="sellingPrice">
           <template #default="{row}">
             <el-statistic :value="row.itemSku?.sellingPrice ? Number(row.itemSku.sellingPrice) : '暂无价格'" :precision="3"/>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="showCostPrice" label="单价（进价）" prop="costPrice">
+          <template #default="{row}">
+            <el-statistic :value="row.itemSku?.costPrice ? Number(row.itemSku.costPrice) : '暂无价格'" :precision="3"/>
           </template>
         </el-table-column>
         <el-table-column label="库存" prop="quantity">
@@ -84,7 +98,7 @@
             <el-statistic :value="Number(row.quantity)" :precision="0"/>
           </template>
         </el-table-column>
-        <el-table-column label="仓库" prop="skuIdAndWarehouseId" align="right">
+        <el-table-column label="仓库" prop="skuIdAndWarehouseId" align="right" min-width="100%">
           <template #default="{row}">
             <div>{{ useWmsStore().warehouseMap.get(row.warehouseId)?.warehouseName }}</div>
           </template>
@@ -121,6 +135,8 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const rowSpanArray = ref(['itemId', 'skuId','skuIdAndWarehouseId'])
+
+const showCostPrice = ref(false);
 
 const filterable = ref(false)
 const queryType = ref("item")
