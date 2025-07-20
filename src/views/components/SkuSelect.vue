@@ -1,6 +1,6 @@
 <template>
   <el-drawer :model-value="show" title="商品选择" @close="handleCancelClick" :size="size" :close-on-click-modal="false" append-to-body>
-        <el-form :inline="true" label-width="68px">
+        <el-form :inline="true" label-width="68px" @keyup.enter.native="loadAll">
           <el-row :gutter="20">
             <el-col :span="8">
               <el-form-item label="商品名称">
