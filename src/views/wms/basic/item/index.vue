@@ -286,6 +286,7 @@
 
       <template #footer>
         <div class="dialog-footer">
+          <el-button :loading="buttonLoading" @click="submitFormTemporary">暂 存</el-button>
           <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
           <el-button @click="cancel">取 消</el-button>
         </div>
@@ -668,6 +669,33 @@ const submitForm = () => {
         }
         proxy?.$modal.msgSuccess("修改成功");
         dialog.visible = false;
+        await getList();
+      }
+    }
+  });
+}
+const submitFormTemporary = () => {
+  form.value.sku = skuForm.itemSkuList
+  itemFormRef.value.validate(async (valid) => {
+    if (valid) {
+      let flag = true
+      if (!skuForm.itemSkuList || skuForm.itemSkuList.length === 0) {
+        proxy?.$modal.msgError("至少包含一个商品规格");
+        flag = false
+      }
+      await skuFormRef.value.validate((valid2) => {
+        if (!valid2) {
+          flag = false;
+        }
+      })
+      if (flag) {
+        buttonLoading.value = true;
+        if (form.value.id) {
+          await updateItem(form.value).finally(() => buttonLoading.value = false);
+        } else {
+          await addItem(form.value).finally(() => buttonLoading.value = false);
+        }
+        proxy?.$modal.msgSuccess("修改成功");
         await getList();
       }
     }
