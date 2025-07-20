@@ -226,15 +226,15 @@
                 <template #default="scope">
                   <div class="flex-center">
                     <span class="mr5">长</span>
-                    <el-input-number :controls="false" :min="0" :precision="1" class="mr5" v-model="scope.row.length" />
+                    <el-input-number :controls="false" :min="0" :precision="1" @wheel.native.prevent class="mr5" v-model="scope.row.length" />
                   </div>
                   <div class="flex-center mt5">
                     <span class="mr5">宽</span>
-                    <el-input-number :controls="false" :min="0" :precision="1" class="mr5" v-model="scope.row.width" />
+                    <el-input-number :controls="false" :min="0" :precision="1" @wheel.native.prevent class="mr5" v-model="scope.row.width" />
                   </div>
                   <div class="flex-center mt5">
                     <span class="mr5">高</span>
-                    <el-input-number :controls="false" :min="0" :precision="1" v-model="scope.row.height" />
+                    <el-input-number :controls="false" :min="0" :precision="1" @wheel.native.prevent v-model="scope.row.height" />
                   </div>
                 </template>
               </el-table-column>
@@ -242,11 +242,11 @@
                 <template #default="scope">
                   <div class="flex-center">
                     <span class="mr5">净重</span>
-                    <el-input-number :controls="false" :min="0" :precision="3" v-model="scope.row.netWeight"/>
+                    <el-input-number :controls="false" :min="0" :precision="3" @wheel.native.prevent v-model="scope.row.netWeight"/>
                   </div>
                   <div class="flex-center mt5">
                     <span class="mr5">毛重</span>
-                    <el-input-number :controls="false" :min="0" :precision="3" v-model="scope.row.grossWeight"/>
+                    <el-input-number :controls="false" :min="0" :precision="3" @wheel.native.prevent v-model="scope.row.grossWeight"/>
                   </div>
                 </template>
               </el-table-column>
@@ -254,11 +254,11 @@
                 <template #default="scope">
                   <div class="flex-center">
                     <span class="mr5">成本价</span>
-                    <el-input-number :controls="false" :min="0" :precision="3" v-model="scope.row.costPrice"/>
+                    <el-input-number :controls="false" :min="0" :precision="3" @wheel.native.prevent v-model="scope.row.costPrice"/>
                   </div>
                   <div class="flex-center mt5">
                     <span class="mr5">销售价</span>
-                    <el-input-number :controls="false" :min="0" :precision="3" v-model="scope.row.sellingPrice"/>
+                    <el-input-number :controls="false" :min="0" :precision="3" @wheel.native.prevent v-model="scope.row.sellingPrice"/>
                   </div>
                 </template>
               </el-table-column>
