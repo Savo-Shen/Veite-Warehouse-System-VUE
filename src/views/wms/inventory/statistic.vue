@@ -74,7 +74,7 @@
           </el-table-column>
 
         </template>
-        <el-table-column label="单价" prop="price">
+        <el-table-column label="单价（售价）" prop="price">
           <template #default="{row}">
             <el-statistic :value="row.itemSku?.sellingPrice ? Number(row.itemSku.sellingPrice) : '暂无价格'" :precision="3"/>
           </template>
