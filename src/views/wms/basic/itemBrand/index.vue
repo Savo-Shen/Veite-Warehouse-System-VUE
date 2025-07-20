@@ -27,7 +27,7 @@
             plain
             icon="Plus"
             @click="handleAdd"
-            v-hasPermi="['wms:itemBrand:add']"
+            v-hasPermi="['wms:itemBrand:edit']"
           >新增</el-button>
         </el-col>
       </el-row>
