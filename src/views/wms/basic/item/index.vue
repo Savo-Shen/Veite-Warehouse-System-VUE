@@ -698,8 +698,9 @@ const submitFormTemporary = () => {
         } else {
           await addItem(form.value).finally(() => buttonLoading.value = false);
         }
-        proxy?.$modal.msgSuccess("修改成功");
-        await getList();
+        proxy?.$modal.msgSuccess("暂存成功");
+        const res = await listItemSku({ itemId: form.value.id });
+        skuForm.itemSkuList.splice(0, skuForm.itemSkuList.length, ...res.data);
       }
     }
   });
