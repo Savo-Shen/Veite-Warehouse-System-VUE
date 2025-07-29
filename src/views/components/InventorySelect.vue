@@ -1,7 +1,7 @@
 <template>
   <el-drawer :model-value="show" title="选择库存" @close="handleCancelClick" :size="size" :close-on-click-modal="false"
              append-to-body>
-    <el-form :inline="true" label-width="68px">
+    <el-form :inline="true" label-width="68px" @keyup.enter.native="loadAll">
       <el-form-item label="商品名称">
         <el-input v-model="query.itemName" clearable placeholder="商品名称"></el-input>
       </el-form-item>
