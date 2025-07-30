@@ -1,0 +1,289 @@
+{
+  "panels": [
+    {
+      "index": 0,
+      "height": 140,
+      "width": 240,
+      "paperHeader": 0,
+      "paperFooter": 396.85039370078744,
+      "printElements": [
+        {
+          "options": {
+            "left": 202.5,
+            "top": 21,
+            "height": 30,
+            "width": 282,
+            "title": "威特液压设备有限公司",
+            "fontSize": 21.75,
+            "textAlign": "center",
+            "textContentVerticalAlign": "middle",
+            "letterSpacing": 1.5
+          },
+          "printElementType": { "type": "text" }
+        },
+        {
+          "options": {
+            "left": 501,
+            "top": 21,
+            "height": 9.75,
+            "width": 178.5,
+            "title": "福建省泉州市鲤城区义全街303号",
+            "fontSize": 12
+          },
+          "printElementType": { "type": "text" }
+        },
+        {
+          "options": {
+            "left": 6,
+            "top": 10.5,
+            "height": 51,
+            "width": 115.5,
+            "src": "http://macbook-pro-m1-max.local:8080/wms/image/logo"
+          },
+          "printElementType": { "type": "image" }
+        },
+        {
+          "options": {
+            "left": 501,
+            "top": 39,
+            "height": 9.75,
+            "width": 178.5,
+            "title": "TEL: 13959893950",
+            "fontSize": 12
+          },
+          "printElementType": { "type": "text" }
+        },
+        {
+          "options": {
+            "left": 285,
+            "top": 72,
+            "height": 31.5,
+            "width": 120,
+            "title": "送货单",
+            "fontFamily": "SimSun",
+            "fontSize": 19.5,
+            "letterSpacing": 12,
+            "textAlign": "center",
+            "textContentVerticalAlign": "middle"
+          },
+          "printElementType": { "type": "text" }
+        },
+        {
+          "options": {
+            "left": 507,
+            "top": 75,
+            "height": 16.5,
+            "width": 169.5,
+            "title": "出库单",
+            "field": "orderNo",
+            "coordinateSync": false,
+            "widthHeightSync": false,
+            "fontSize": 12,
+            "fontWeight": "600",
+            "lineHeight": 26.25,
+            "qrCodeLevel": 0,
+            "textContentVerticalAlign": "bottom"
+          },
+          "printElementType": { "title": "文本", "type": "text" }
+        },
+        {
+          "options": {
+            "left": 4.5,
+            "top": 69,
+            "height": 15,
+            "width": 200,
+            "title": "客户",
+            "field": "merchantName",
+            "coordinateSync": false,
+            "widthHeightSync": false,
+            "qrCodeLevel": 0,
+            "fontSize": 12,
+            "textContentVerticalAlign": "bottom"
+          },
+          "printElementType": { "title": "文本", "type": "text" }
+        },
+        {
+          "options": {
+            "left": 522,
+            "top": 157.5,
+            "height": 9.75,
+            "width": 150,
+            "title": "总金额",
+            "field": "totalAmount",
+            "coordinateSync": false,
+            "widthHeightSync": false,
+            "qrCodeLevel": 0,
+            "right": 489.75,
+            "bottom": 131.25,
+            "vCenter": 414.75,
+            "hCenter": 126.375,
+            "fontSize": 14.25
+          },
+          "printElementType": { "title": "文本", "type": "text" }
+        },
+        {
+          "options": {
+            "left": 4.5,
+            "top": 120,
+            "height": 54,
+            "width": 670.5,
+            "field": "table",
+            "groupFieldsFormatter": "function(type,options,data){ return [\"name\"] }",
+            "fontSize": 14.25,
+            "columns": [
+              [
+                {
+                  "width": 167.625,
+                  "title": "商品名称",
+                  "columnId": "itemName",
+                  "fixed": false,
+                  "rowspan": 1,
+                  "colspan": 1
+                },
+                {
+                  "width": 194.57832831545454,
+                  "title": "规格名称",
+                  "columnId": "skuName",
+                  "fixed": false,
+                  "rowspan": 1,
+                  "colspan": 1
+                },
+                {
+                  "width": 140.67167168454546,
+                  "title": "数量",
+                  "columnId": "quantity",
+                  "fixed": false,
+                  "rowspan": 1,
+                  "colspan": 1,
+                  "align": "right"
+                },
+                {
+                  "width": 167.625,
+                  "title": "金额(元)",
+                  "columnId": "amount",
+                  "fixed": false,
+                  "rowspan": 1,
+                  "colspan": 1,
+                  "align": "right"
+                }
+              ]
+            ]
+          },
+          "printElementType": { "title": "表格", "type": "table" }
+        },
+        {
+          "options": {
+            "left": 153,
+            "top": 160.5,
+            "height": 9.75,
+            "width": 223.5,
+            "title": "卡号：6222 0814 0800 0472 036",
+            "fontSize": 12
+          },
+          "printElementType": { "type": "text" }
+        },
+        {
+          "options": {
+            "left": 64.5,
+            "top": 160.5,
+            "height": 9.75,
+            "width": 75,
+            "title": "户名：余惠萍",
+            "fontSize": 12
+          },
+          "printElementType": { "type": "text" }
+        },
+        {
+          "options": {
+            "left": 523.5,
+            "top": 175.5,
+            "height": 9.75,
+            "width": 150,
+            "title": "制单人",
+            "field": "createBy",
+            "coordinateSync": false,
+            "widthHeightSync": false,
+            "qrCodeLevel": 0,
+            "fontSize": 12
+          },
+          "printElementType": { "title": "文本", "type": "text" }
+        },
+        {
+          "options": {
+            "left": 6,
+            "top": 160.5,
+            "height": 9.75,
+            "width": 51,
+            "title": "工商银行",
+            "fontSize": 12
+          },
+          "printElementType": { "type": "text" }
+        },
+        {
+          "options": {
+            "left": 507,
+            "top": 103.5,
+            "height": 9.75,
+            "width": 171,
+            "title": "创建时间",
+            "field": "createTime",
+            "coordinateSync": false,
+            "widthHeightSync": false,
+            "qrCodeLevel": 0,
+            "right": 489.75,
+            "bottom": 131.25,
+            "vCenter": 414.75,
+            "hCenter": 126.375,
+            "fontSize": 12
+          },
+          "printElementType": { "title": "文本", "type": "text" }
+        },
+        {
+          "options": {
+            "left": 6,
+            "top": 175.5,
+            "height": 9.75,
+            "width": 375,
+            "title": "备注",
+            "field": "remark",
+            "coordinateSync": false,
+            "widthHeightSync": false,
+            "qrCodeLevel": 0,
+            "right": 139.5,
+            "bottom": 233.25,
+            "vCenter": 79.5,
+            "hCenter": 228.375,
+            "fontSize": 10.5
+          },
+          "printElementType": { "title": "文本", "type": "text" }
+        },
+        {
+          "options": {
+            "left": 4.5,
+            "top": 88.5,
+            "height": 12,
+            "width": 120,
+            "title": "电话号：\n",
+            "fontSize": 12,
+            "textContentVerticalAlign": "bottom"
+          },
+          "printElementType": { "type": "text" }
+        },
+        {
+          "options": {
+            "left": 4.5,
+            "top": 105,
+            "height": 9.75,
+            "width": 120,
+            "title": "送货地址：",
+            "fontSize": 12
+          },
+          "printElementType": { "type": "text" }
+        }
+      ],
+      "paperNumberLeft": 390,
+      "paperNumberTop": 378,
+      "paperNumberDisabled": true
+    }
+  ]
+}

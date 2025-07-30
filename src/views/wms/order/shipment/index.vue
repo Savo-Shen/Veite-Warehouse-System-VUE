@@ -216,6 +216,7 @@ import {listByShipmentOrderId} from "@/api/wms/shipmentOrderDetail";
 import {getCurrentInstance, reactive, ref, toRefs} from "vue";
 import {useWmsStore} from "../../../../store/modules/wms";
 import shipmentPanel from "@/components/PrintTemplate/shipment-panel";
+import veiteShipmentPanel from "@/components/PrintTemplate/veite-Shipment-panel";
 
 const { proxy } = getCurrentInstance();
 const { wms_shipment_status, wms_shipment_type} = proxy.useDict("wms_shipment_status", "wms_shipment_type");
@@ -344,7 +345,8 @@ async function handlePrint(row) {
     remark: shipmentOrder.remark,
     table
   }
-  let printTemplate = new proxy.$hiprint.PrintTemplate({template: shipmentPanel})
+  // let printTemplate = new proxy.$hiprint.PrintTemplate({template: shipmentPanel})
+  let printTemplate = new proxy.$hiprint.PrintTemplate({template: veiteShipmentPanel})
   printTemplate.print(printData, {}, {
     styleHandler: () => {
       return '<link href="https://cyl-press.oss-cn-shenzhen.aliyuncs.com/print-lock.css" media="print" rel="stylesheet">';
