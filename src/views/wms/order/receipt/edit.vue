@@ -38,7 +38,7 @@
             <el-col :span="6">
               <el-form-item label="供应商" prop="merchantId">
                 <el-select v-model="form.merchantId" placeholder="请选择供应商" clearable filterable>
-                  <el-option v-for="item in useWmsStore().merchantList" :key="item.id" :label="item.merchantName" :value="item.id"/>
+                  <el-option v-for="item in useWmsStore().merchantList.filter(m => m.merchantType != 1)" :key="item.id" :label="item.merchantName" :value="item.id"/>
                 </el-select>
               </el-form-item>
             </el-col>
