@@ -41,7 +41,7 @@
             style="width: 400px;"
             class="mr10 mt10"
             @nodeClick="handleQueryType"
-            :default-expand-all="true"
+            :default-expand-all="false"
             :highlight-current="true"
             node-key="label"
             current-node-key="全部"
