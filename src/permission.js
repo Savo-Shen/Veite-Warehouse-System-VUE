@@ -66,6 +66,7 @@ async function initData() {
   await useWmsStore().getItemCategoryList()
   await useWmsStore().getItemCategoryTreeList()
   await useWmsStore().getItemBrandList()
+  await useWmsStore().getLocationList()
 }
 
 router.afterEach(() => {
