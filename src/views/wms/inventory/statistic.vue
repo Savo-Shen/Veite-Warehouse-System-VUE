@@ -81,11 +81,30 @@
               <div v-if="row.itemSku.skuCode">规格编号：{{ row.itemSku.skuCode }}</div>
             </template>
           </el-table-column>
+          <el-table-column label="位置信息" prop="locationId">
+            <template #default="{ row }">
+              <dict-tag v-if="!row.location"
+                :customTags="[
+                  { label: '暂无位置', type: 'info' }
+                ]"
+              />
+              <div v-else>
+                <dict-tag :customTags="[
+                  { label: row.location.locationCode, type: 'primary' }
+                ]"
+                />
+                <div>{{ row.location.locationName }}</div>
+              </div>
+            </template>
+          </el-table-column>
 
         </template>
         <el-table-column label="单价（售价）" prop="sellingPrice">
           <template #default="{row}">
-            <el-statistic :value="row.itemSku?.sellingPrice ? Number(row.itemSku.sellingPrice) : '暂无价格'" :precision="3"/>
+            <el-statistic v-if="row.itemSku?.sellingPrice" :value="Number(row.itemSku.sellingPrice)" :precision="3"/>
+            <dict-tag v-else :customTags="[
+              { label: '暂无价格', type: 'info' }
+            ]"/>
           </template>
         </el-table-column>
         <el-table-column v-if="showCostPrice" label="单价（进价）" prop="costPrice">
