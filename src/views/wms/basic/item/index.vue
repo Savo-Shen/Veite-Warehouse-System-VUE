@@ -98,7 +98,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="重量(kg)" width="140" align="left">
+            <!-- <el-table-column label="重量(kg)" width="140" align="left">
               <template #default="{ row }">
                 <div v-if="row.itemSku.netWeight" class="flex-space-between">
                   <span>净重：</span>
@@ -113,10 +113,27 @@
                   </div>
                 </div>
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="长宽高(cm)" align="right" min-width="120">
               <template #default="{ row }">
                 <div>{{ getVolumeText(row.itemSku) }}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="位置" align="left" min-width="120">
+              <template #default="{ row }">
+                <!-- <div>{{ row.location }}</div> -->
+                <dict-tag v-if="!row.location"
+                :customTags="[
+                  { label: '暂无位置', type: 'info' }
+                ]"
+              />
+              <div v-else>
+                <dict-tag :customTags="[
+                  { label: row.location.locationCode, type: 'primary' }
+                ]"
+                />
+                <div>{{ row.location.locationName }}</div>
+              </div>
               </template>
             </el-table-column>
             <el-table-column label="操作" align="right" prop="itemId" width="200">
@@ -259,6 +276,27 @@
                   <div class="flex-center mt5">
                     <span class="mr5">销售价</span>
                     <el-input-number :controls="false" :min="0" :precision="3" @wheel.native.prevent v-model="scope.row.sellingPrice"/>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="位置信息" width="180">
+                <template #default="scope">
+                  <div class="flex-center">
+                    <span class="mr5">位置</span>
+                    <el-select
+                      v-model="scope.row.locationId"
+                      placeholder="请选择位置"
+                      clearable
+                      filterable
+                      style="width: 160px;"
+                    >
+                      <el-option
+                        v-for="loc in useWmsStore().locationList"
+                        :key="loc.id"
+                        :label="loc.locationCode + ' (' + loc.locationName + ')'"
+                        :value="loc.id"
+                      />
+                    </el-select>
                   </div>
                 </template>
               </el-table-column>
