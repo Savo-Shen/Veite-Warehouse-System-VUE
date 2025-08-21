@@ -1,23 +1,32 @@
 <template>
   <div>
+    <!-- 先渲染 customTags -->
+    <template v-for="(item, index) in customTags" :key="'custom-' + index">
+      <el-tag
+        :type="item.type || 'default'"
+        :class="item.class || ''"
+        :disable-transitions="true"
+      >{{ item.label }}</el-tag>
+    </template>
+
+    <!-- 原来的 options 渲染 -->
     <template v-for="(item, index) in options">
       <template v-if="values.includes(item.value)">
         <span
           v-if="(item.elTagType == 'default' || item.elTagType == '') && (item.elTagClass == '' || item.elTagClass == null)"
           :key="item.value"
-          :index="index"
-          :class="item.elTagClass"
         >{{ item.label + " " }}</span>
         <el-tag
           v-else
           :disable-transitions="true"
           :key="item.value + ''"
-          :index="index"
           :type="item.elTagType === 'primary' ? '' : item.elTagType"
           :class="item.elTagClass"
         >{{ item.label + " " }}</el-tag>
       </template>
     </template>
+
+    <!-- 未匹配显示 -->
     <template v-if="unmatch && showValue">
       {{ unmatchArray | handleArray }}
     </template>
@@ -25,18 +34,16 @@
 </template>
 
 <script setup>
-// 记录未匹配的项
+import { ref, computed } from 'vue';
+
 const unmatchArray = ref([]);
 
 const props = defineProps({
-  // 数据
   options: {
     type: Array,
-    default: null,
+    default: () => [],
   },
-  // 当前的值
   value: [Number, String, Array],
-  // 当未找到匹配的数据时，显示value
   showValue: {
     type: Boolean,
     default: true,
@@ -44,39 +51,48 @@ const props = defineProps({
   separator: {
     type: String,
     default: ",",
+  },
+  // 新增：直接渲染的标签列表
+  customTags: {
+    type: Array,
+    default: () => [], // [{ value: 'xx', label: '显示文本', type: 'success', class: '' }]
+    // success
+    // 成功，绿色
+    // info
+    // 灰色
+    // warning
+    // 警告，黄色
+    // danger
+    // 危险，红色
+    // primary
+    // 主要，深蓝色
+    // default
+    // 蓝色
+
   }
 });
 
 const values = computed(() => {
-  if (props.value === null || typeof props.value === 'undefined' || props.value === '') return [];
-  return Array.isArray(props.value) ? props.value.map(item => '' + item) : String(props.value).split(props.separator);
+  if (!props.value) return [];
+  return Array.isArray(props.value)
+    ? props.value.map(item => '' + item)
+    : String(props.value).split(props.separator);
 });
 
 const unmatch = computed(() => {
   unmatchArray.value = [];
-  // 没有value不显示
-  if (props.value === null || typeof props.value === 'undefined' || props.value === '' || props.options.length === 0) return false
-  // 传入值为数组
-  let unmatch = false // 添加一个标志来判断是否有未匹配项
+  if (!props.value || props.options.length === 0) return false;
+  let unmatchFlag = false;
   values.value.forEach(item => {
     if (!props.options.some(v => v.value === item)) {
       unmatchArray.value.push(item)
-      unmatch = true // 如果有未匹配项，将标志设置为true
+      unmatchFlag = true
     }
-  })
-  return unmatch // 返回标志的值
+  });
+  return unmatchFlag;
 });
 
 function handleArray(array) {
-  if (array.length === 0) return "";
-  return array.reduce((pre, cur) => {
-    return pre + " " + cur;
-  });
+  return array.length ? array.join(' ') : '';
 }
 </script>
-
-<style scoped>
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-</style>
