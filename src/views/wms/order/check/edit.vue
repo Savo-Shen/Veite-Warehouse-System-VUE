@@ -225,7 +225,7 @@ const startCheck = () => {
       }
     })
     res.data.forEach(it => {
-        form.value.details.push({
+        form.value.details.unshift({
             itemSku: it.itemSku,
             item: it.item,
             inventoryId: it.id,
@@ -245,7 +245,7 @@ const handleOkClick = (item) => {
   selectedSku.value = [...item]
   item.forEach(it => {
     if (!form.value.details.find(detail => detail.itemSku.id === it.id)) {
-      form.value.details.push(
+      form.value.details.unshift(
         {
           itemSku: it.itemSku,
           item: it.item,
