@@ -2,6 +2,7 @@ import { listWarehouseNoPage } from '@/api/wms/warehouse';
 import { listMerchantNoPage } from "@/api/wms/merchant";
 import { listItemCategory, treeSelectItemCategory } from "@/api/wms/itemCategory";
 import { listItemBrand } from "@/api/wms/itemBrand";
+import { listLocationNoPage } from "@/api/wms/location";
 import {defineStore} from "pinia";
 import {ref} from "vue";
 
@@ -83,6 +84,24 @@ export const useWmsStore = defineStore('wms', () => {
     })
   }
 
+  // 位置管理
+  const locationList = ref([]);
+  const locationMap = ref(new Map());
+
+  const getLocationList = (query) => {
+    return new Promise((resolve, reject) => {
+      listLocationNoPage(query).then(res => {
+        locationList.value = res.data;
+        const map = new Map();
+        locationList.value.forEach(location => {
+          map.set(location.id, location);
+        });
+        locationMap.value = map;
+        resolve();
+      }).catch(() => reject());
+    });
+  };
+
   return {
     // 仓库管理
     warehouseList,
@@ -101,6 +120,10 @@ export const useWmsStore = defineStore('wms', () => {
     // 商品品牌管理
     itemBrandList,
     itemBrandMap,
-    getItemBrandList
+    getItemBrandList,
+    // 位置管理
+    locationList,
+    locationMap,
+    getLocationList
   };
 });
