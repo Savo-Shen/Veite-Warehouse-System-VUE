@@ -129,7 +129,7 @@
               />
               <div v-else>
                 <dict-tag :customTags="[
-                  { label: row.location.locationCode, type: 'primary' }
+                  { label: row.location.locationCode, type: '' }
                 ]"
                 />
                 <div>{{ row.location.locationName }}</div>
@@ -227,7 +227,7 @@
                   </el-form-item>
                 </template>
               </el-table-column>
-              <el-table-column label="编号/条码" width="250">
+              <el-table-column label="编号/条码" width="180">
                 <template #default="scope">
                   <div class="flex-center">
                     <span class="mr5" style="width: 50px">编号</span>
@@ -284,7 +284,7 @@
                   <div class="flex-center">
                     <span class="mr5">位置</span>
                     <el-select
-                      v-model="scope.row.locationId"
+                      v-model="scope.row.itemLocationId"
                       placeholder="请选择位置"
                       clearable
                       filterable
@@ -708,6 +708,7 @@ const submitForm = () => {
         } else {
           await addItem(form.value).finally(() => buttonLoading.value = false);
         }
+        console.log('form.value', form.value)
         proxy?.$modal.msgSuccess("修改成功");
         dialog.visible = false;
         await getList();
