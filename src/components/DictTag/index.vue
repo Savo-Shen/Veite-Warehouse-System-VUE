@@ -3,7 +3,7 @@
     <!-- 先渲染 customTags -->
     <template v-for="(item, index) in customTags" :key="'custom-' + index">
       <el-tag
-        :type="item.type || 'default'"
+        :type="item.type || ''"
         :class="item.class || ''"
         :disable-transitions="true"
       >{{ item.label }}</el-tag>
@@ -13,14 +13,14 @@
     <template v-for="(item, index) in options">
       <template v-if="values.includes(item.value)">
         <span
-          v-if="(item.elTagType == 'default' || item.elTagType == '') && (item.elTagClass == '' || item.elTagClass == null)"
+          v-if="(item.elTagType == '' || item.elTagType == '') && (item.elTagClass == '' || item.elTagClass == null)"
           :key="item.value"
         >{{ item.label + " " }}</span>
         <el-tag
           v-else
           :disable-transitions="true"
           :key="item.value + ''"
-          :type="item.elTagType === 'primary' ? '' : item.elTagType"
+          :type="item.elTagType === '' ? '' : item.elTagType"
           :class="item.elTagClass"
         >{{ item.label + " " }}</el-tag>
       </template>
