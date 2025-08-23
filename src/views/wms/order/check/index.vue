@@ -49,7 +49,7 @@
         </el-col>
       </el-row>
 
-      <el-table v-loading="loading" :data="checkOrderList" border class="mt20"
+      <el-table v-loading="loading" :data="checkOrderList" border stripe class="mt20"
                 :row-key="getRowKey"
                 empty-text="暂无盘库单"
                 cell-class-name="vertical-top-cell"

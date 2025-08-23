@@ -73,7 +73,7 @@
           >新增</el-button>
         </el-col>
       </el-row>
-      <el-table v-loading="loading" :data="shipmentOrderList" border class="mt20"
+      <el-table v-loading="loading" :data="shipmentOrderList" border stripe class="mt20"
                 @expand-change="handleExpandExchange"
                 :row-key="getRowKey"
                 :expand-row-keys="expandedRowKeys"

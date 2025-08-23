@@ -112,7 +112,7 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="ossList" @selection-change="handleSelectionChange"
+    <el-table v-loading="loading" stripe :data="ossList" @selection-change="handleSelectionChange"
               :header-cell-class-name="handleHeaderClass"
               @header-click="handleHeaderCLick"
               v-if="showTable">

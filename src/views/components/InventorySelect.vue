@@ -18,7 +18,7 @@
         <el-button type="primary" @click="loadAll">查询</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="list" @selection-change="handleSelectionChange" border :row-key="getRowKey" empty-text="暂无库存"
+    <el-table :data="list" @selection-change="handleSelectionChange" border stripe :row-key="getRowKey" empty-text="暂无库存"
               v-loading="loading" ref="inventorySelectFormRef" cell-class-name="my-cell" class="mt20">
       <el-table-column type="selection" width="55" :reserve-selection="true" :selectable="judgeSelectable"/>
       <el-table-column label="商品信息" prop="itemId">

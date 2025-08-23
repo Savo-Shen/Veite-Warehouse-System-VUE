@@ -47,7 +47,7 @@
         </div>
         <el-checkbox v-model="filterable" label="过滤掉库存为0的商品" size="large" @change="handleChangeFilterZero"/>
       </div>
-      <el-table :data="inventoryList" border :span-method="spanMethod"
+      <el-table :data="inventoryList" border stripe :span-method="spanMethod"
                 cell-class-name="vertical-top-cell" v-loading="loading" empty-text="暂无库存">
         <template v-if="queryType == 'warehouse'">
           <el-table-column label="仓库" prop="warehouseId">
@@ -112,9 +112,26 @@
             <el-statistic :value="row.itemSku?.costPrice ? Number(row.itemSku.costPrice) : '暂无价格'" :precision="3"/>
           </template>
         </el-table-column>
-        <el-table-column label="库存" prop="quantity">
+        <!-- <el-table-column label="库存" prop="quantity">
           <template #default="{ row }">
             <el-statistic :value="Number(row.quantity)" :precision="0"/>
+          </template>
+        </el-table-column> -->
+        <el-table-column label="库存" prop="quantity" align="center">
+          <template #default="{ row }">
+            <el-tag
+              class="inventory-tag"
+              :type="row.quantity === 0 
+                        ? 'info' 
+                        : row.quantity <= 5 
+                          ? 'danger' 
+                          : row.quantity <= 10 
+                            ? 'warning' 
+                            : 'success'"
+              effect="dark"
+            >
+              {{ Math.floor(row.quantity) }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="仓库" prop="skuIdAndWarehouseId" align="right" min-width="100%">
@@ -239,5 +256,15 @@ onMounted(() => {
 }
 .el-table .vertical-top-cell {
   vertical-align: top
+}
+.inventory-tag {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 12px 6px;
+  font-family: monospace; /* 等宽字体 */
+  min-width: 50px; /* 固定宽度，数字看起来更整齐 */
+  text-align: center;
+  justify-content: center;
+  display: inline-flex;
 }
 </style>

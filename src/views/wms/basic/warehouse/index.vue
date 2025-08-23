@@ -15,7 +15,7 @@
         </el-col>
       </el-row>
 
-      <el-table v-loading="loading" :data="warehouseList" border class="mt20" empty-text="暂无品牌">
+      <el-table v-loading="loading" :data="warehouseList" border stripe class="mt20" empty-text="暂无品牌">
         <el-table-column label="仓库名称" prop="warehouseName" />
         <el-table-column label="仓库编号" prop="warehouseCode" />
         <el-table-column label="创建时间" prop="createTime" width="180"/>

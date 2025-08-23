@@ -5,7 +5,7 @@
       <div></div>
       <el-checkbox v-model="queryParams.haveProfitAndLoss" label="只查看有盈亏数的" @change="handleQuery"/>
     </div>
-    <el-table :data="list" border empty-text="暂无商品明细" v-loading="loading" ref="inventorySelectFormRef"
+    <el-table :data="list" border stripe empty-text="暂无商品明细" v-loading="loading" ref="inventorySelectFormRef"
               cell-class-name="my-cell" class="mt20">
       <el-table-column label="商品名称">
         <template #default="{ row }">

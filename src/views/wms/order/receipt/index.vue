@@ -74,7 +74,7 @@
         </el-col>
       </el-row>
 
-      <el-table v-loading="loading" :data="receiptOrderList" border class="mt20"
+      <el-table v-loading="loading" :data="receiptOrderList" border  stripe class="mt20"
                 @expand-change="handleExpandExchange"
                 :row-key="getRowKey"
                 :expand-row-keys="expandedRowKeys"
@@ -85,7 +85,7 @@
           <template #default="props">
             <div style="padding: 0 50px 20px 50px">
               <h3>商品明细</h3>
-              <el-table :data="props.row.details" v-loading="detailLoading[props.$index]" empty-text="暂无商品明细">
+              <el-table :data="props.row.details" stripe v-loading="detailLoading[props.$index]" empty-text="暂无商品明细">
                 <el-table-column label="商品名称">
                   <template #default="{ row }">
                     <div>{{ row?.item?.itemName }}</div>

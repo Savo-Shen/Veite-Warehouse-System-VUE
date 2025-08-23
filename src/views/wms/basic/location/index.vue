@@ -32,7 +32,7 @@
         </el-col>
       </el-row>
 
-      <el-table v-loading="loading" :data="locationList" border class="mt20" empty-text="暂无位置">
+      <el-table v-loading="loading" :data="locationList" border stripe class="mt20" empty-text="暂无位置">
         <el-table-column label="位置编码" prop="locationCode" />
         <el-table-column label="位置名称" prop="locationName" />
         <el-table-column label="备注" prop="remark" width="360"/>

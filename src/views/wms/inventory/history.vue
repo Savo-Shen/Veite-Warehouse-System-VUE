@@ -65,7 +65,7 @@
       <el-row :gutter="10" class="mb8" type="flex" justify="space-between">
         <el-col :span="6"><span style="font-size: large">库存记录</span></el-col>
       </el-row>
-      <el-table v-loading="loading" :data="inventoryHistoryList" border class="mt20" empty-text="暂无库存记录" cell-class-name="vertical-top-cell">
+      <el-table v-loading="loading" :data="inventoryHistoryList" border stripe class="mt20" empty-text="暂无库存记录" cell-class-name="vertical-top-cell">
         <el-table-column label="操作单号" prop="orderNo"/>
         <el-table-column label="商品信息">
           <template #default="{ row }">
@@ -109,7 +109,9 @@
           <template #default="{ row }">
             <div class="flex-space-between">
               <div>数量：</div>
-              <el-statistic :value="Number(row.quantity)" :precision="0"/>
+              <!-- <el-statistic :value="Number(row.quantity)" :precision="0"/> -->
+              <el-tag v-if="row.quantity > 0" type="success" class="inventory-tag">+{{ Math.floor(row.quantity) }}</el-tag>
+              <el-tag v-else-if="row.quantity < 0" type="danger" class="inventory-tag">{{ Math.floor(row.quantity) }}</el-tag>
             </div>
             <div class="flex-space-between" v-if="row.amount || row.amount === 0">
               <div>金额：</div>
@@ -198,5 +200,14 @@ getList();
 }
 .el-table .vertical-top-cell {
   vertical-align: top
+}
+.inventory-tag {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: monospace; /* 等宽字体 */
+  min-width: 30px; /* 固定宽度，数字看起来更整齐 */
+  text-align: center;
+  justify-content: center;
+  display: inline-flex;
 }
 </style>
