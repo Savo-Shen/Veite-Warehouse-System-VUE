@@ -216,7 +216,7 @@ const initFormData = {
   totalAmount: undefined,
   orderStatus: 0,
   remark: undefined,
-  warehouseId: undefined,
+  warehouseId: "1945324849064845313",
   totalQuantity: 0,
   details: [],
 }
