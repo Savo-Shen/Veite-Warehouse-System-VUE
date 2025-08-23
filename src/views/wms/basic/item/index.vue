@@ -1,27 +1,51 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form :model="queryParams" ref="queryFormRef" :inline="true" label-width="68px">
-        <el-form-item label="商品编号" prop="itemCode">
-          <el-input v-model="queryParams.itemCode" placeholder="请输入商品编号" clearable @keyup.enter="handleQuery"/>
-        </el-form-item>
-        <el-form-item label="商品名称" prop="itemName">
-          <el-input v-model="queryParams.itemName" placeholder="请输入商品名称" clearable @keyup.enter="handleQuery"/>
-        </el-form-item>
-        <el-form-item label="商品品牌" prop="itemBrand">
-          <el-select v-model="queryParams.itemBrand" clearable filterable>
-            <el-option
-              v-for="item in useWmsStore().itemBrandList"
-              :key="item.id"
-              :label="item.brandName"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-          <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-        </el-form-item>
+      <el-form :model="queryParams" ref="queryFormRef" :inline="true" label-width="70px" @submit.prevent @keyup.enter="handleQuery">
+        <div style="display: flex;">
+          <el-form-item label="智能搜索" style="flex: 1;">
+            <el-input v-model="queryParams.itemKeywords" clearable placeholder="输入商品或规格名称"/>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            <el-button type="text" @click="showSearch = !showSearch">
+              <span v-if="showSearch">收起高级搜索</span>
+              <span v-else>展开高级搜索</span>
+          </el-button>
+          </el-form-item>
+        </div>
+        <el-collapse-transition>
+          <div v-if="showSearch">
+            <el-form-item label="商品名称" prop="itemName">
+              <el-input v-model="queryParams.itemName" placeholder="请输入商品名称" clearable/>
+            </el-form-item>
+            <el-form-item label="商品规格" prop="skuName">
+              <el-input v-model="queryParams.skuName" placeholder="请输入商品规格" clearable/>
+            </el-form-item>
+            <el-form-item label="商品品牌" prop="itemBrand">
+              <el-select v-model="queryParams.itemBrand" clearable filterable>
+                <el-option
+                  v-for="item in useWmsStore().itemBrandList"
+                  :key="item.id"
+                  :label="item.brandName"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="商品位置" prop="itemLocationId">
+              <el-select v-model="queryParams.itemLocationId" clearable filterable>
+                <el-option
+                  v-for="item in useWmsStore().locationList"
+                  :key="item.id"
+                  :label="item.locationCode + ' (' + item.locationName + ')'"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-collapse-transition>
+        
       </el-form>
     </el-card>
     <el-card class="mt20">
@@ -347,7 +371,7 @@
           />
         </el-form-item>
         <el-form-item label="商品分类名称" prop="categoryName">
-          <el-input v-model="categoryForm.categoryName" placeholder="请输入商品分类名称" @keyup.enter="submitCategoryForm"/>
+          <el-input v-model="categoryForm.categoryName" placeholder="请输入商品分类名称"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -398,7 +422,7 @@ const itemCategoryTreeOptionsList = computed(() => {
 });
 const buttonLoading = ref(false);
 const loading = ref(true);
-const showSearch = ref(true);
+const showSearch = ref(false);
 const ids = ref([]);
 const single = ref(true);
 const multiple = ref(true);
@@ -466,9 +490,10 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    itemCode: undefined,
+    skuName: undefined,
     itemName: undefined,
-    itemType: undefined
+    itemLocationId: undefined,
+    itemKeywords: undefined,
   },
   rules: {
     id: [
@@ -523,7 +548,8 @@ const currentType = ref()
 /** 查询物料列表 */
 const getList = async () => {
   loading.value = true;
-  const res = await listItemSkuPage(queryParams.value);
+  let query = {...queryParams.value};
+  const res = await listItemSkuPage(query);
   const content = [...res.rows];
   itemList.value = content.map((it) => ({...it, id: it.skuId,itemId: it?.item?.id}));
   total.value = res.total;
