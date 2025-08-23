@@ -1,36 +1,65 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form :model="queryParams" ref="queryRef" label-width="90px" :inline="true" @keyup.enter.native="handleQuery">
-        <el-form-item class="col4" label="维度 " prop="itemId">
-          <el-radio-group v-model="queryType" size="default" @change="handleSortTypeChange">
-            <el-radio-button label="item">商品</el-radio-button>
-            <el-radio-button label="warehouse">仓库</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item class="col4" label="仓库" prop="warehouseId">
-          <el-select style="width: 100%" v-model="queryParams.warehouseId" placeholder="请选择仓库"
-                     filterable clearable>
-            <el-option v-for="item in useWmsStore().warehouseList" :key="item.id" :label="item.warehouseName"
-                       :value="item.id"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item class="col4" label="商品名称" prop="itemName">
-          <el-input v-model="queryParams.itemName" clearable placeholder="商品名称"></el-input>
-        </el-form-item>
-        <el-form-item class="col4" label="商品编号" prop="itemCode">
-          <el-input v-model="queryParams.itemCode" clearable placeholder="商品编号"></el-input>
-        </el-form-item>
-        <el-form-item class="col4" label="规格名称" prop="skuName">
-          <el-input v-model="queryParams.skuName" clearable placeholder="规格名称"></el-input>
-        </el-form-item>
-        <el-form-item class="col4" label="规格编号" prop="skuCode">
-          <el-input v-model="queryParams.skuCode" clearable placeholder="规格编号"></el-input>
-        </el-form-item>
-        <el-form-item class="col4" style="margin-left: 32px">
-          <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-          <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-        </el-form-item>
+      <el-form :model="queryParams" ref="queryRef" label-width="90px" :inline="true" @submit.prevent @keyup.enter="handleQuery">
+        <div style="display: flex; justify-content: space-between; ">
+
+          <el-form-item class="col4" label="维度" prop="itemId">
+            <el-radio-group v-model="queryType" size="default" @change="handleSortTypeChange">
+              <el-radio-button label="item">商品</el-radio-button>
+              <el-radio-button label="warehouse">仓库</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item label="智能搜索" style="flex: 1; margin-left: -100px;">
+            <el-input v-model="queryParams.itemKeywords" clearable placeholder="输入商品或规格名称"  />
+          </el-form-item>
+
+          <el-form-item class="col4">
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            <el-button type="text" @click="advancedSearchVisible = !advancedSearchVisible">高级搜索</el-button>
+          </el-form-item>
+        </div>
+        <!-- 高级搜索表单区 -->
+        <el-collapse-transition>
+          <div v-if="advancedSearchVisible" class="advanced-search">
+            <el-form-item class="col4" label="仓库" prop="warehouseId">
+              <el-select style="width: 100%" v-model="queryParams.warehouseId" placeholder="请选择仓库" filterable clearable>
+                <el-option v-for="item in useWmsStore().warehouseList" :key="item.id" :label="item.warehouseName" :value="item.id"/>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item class="col4" label="商品名称" prop="itemName">
+              <el-input v-model="queryParams.itemName" clearable placeholder="商品名称"></el-input>
+            </el-form-item>
+
+            <el-form-item class="col4" label="规格名称" prop="skuName">
+              <el-input v-model="queryParams.skuName" clearable placeholder="规格名称"></el-input>
+            </el-form-item>
+
+            <el-form-item label="商品位置" prop="itemLocationId">
+              <el-select v-model="queryParams.itemLocationId" clearable filterable @keyup.enter.native="handleQuery">
+                <el-option
+                  v-for="item in useWmsStore().locationList"
+                  :key="item.id"
+                  :label="item.locationCode + ' (' + item.locationName + ')'"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item class="col4" label="商品编号" prop="itemCode">
+              <el-input v-model="queryParams.itemCode" clearable placeholder="商品编号"></el-input>
+            </el-form-item>
+
+            <el-form-item class="col4" label="规格编号" prop="skuCode">
+              <el-input v-model="queryParams.skuCode" clearable placeholder="规格编号"></el-input>
+            </el-form-item>
+
+          </div>
+        </el-collapse-transition>
+
       </el-form>
     </el-card>
     <el-card class="mt20">
@@ -174,6 +203,8 @@ const rowSpanArray = ref(['itemId', 'skuId','skuIdAndWarehouseId'])
 
 const showCostPrice = ref(false);
 
+const advancedSearchVisible = ref(false);
+
 const filterable = ref(false)
 const queryType = ref("item")
 const queryParams = ref({
@@ -185,7 +216,9 @@ const queryParams = ref({
   itemCode: undefined,
   skuName: undefined,
   skuCode: undefined,
-  minQuantity: undefined
+  itemLocationId: undefined,
+  minQuantity: undefined,
+  itemKeywords: undefined, // 新增关键字搜索
 })
 
 /** 查询库存列表 */
