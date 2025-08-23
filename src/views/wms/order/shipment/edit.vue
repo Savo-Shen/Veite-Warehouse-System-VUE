@@ -128,13 +128,7 @@
                 <div v-if="row.itemSku.barcode">条码：{{row.itemSku.barcode}}</div>
               </template>
             </el-table-column>
-            <el-table-column label="单价">
-              <template #default="{ row }">
-                <div v-if="row.itemSku.sellingPrice">{{ row.itemSku.sellingPrice }}</div>
-                <div v-else>暂无售价</div>
-              </template>
-            </el-table-column>
-            <el-table-column label="出库数量" prop="quantity" width="180">
+            <el-table-column label="出库数量" prop="quantity" width="220">
               <template #default="scope">
                 <el-input-number
                   v-model="scope.row.quantity"
@@ -145,15 +139,37 @@
                 ></el-input-number>
               </template>
             </el-table-column>
-            <el-table-column label="金额" prop="amount" width="180">
-              <template #default="scope">
+            <el-table-column label="单价" prop="itemSku.sellingPrice" width="220">
+              <template #default="{ row }">
+                <!-- <div v-if="row.itemSku.sellingPrice">{{ row.itemSku.sellingPrice }}</div>
+                <div v-else>暂无售价</div> -->
                 <el-input-number
+                  v-model="row.itemSku.sellingPrice"
+                  placeholder="单价"
+                  :min="0"
+                  :precision="2"
+                  @change="handleChangeQuantity"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column label="金额" prop="amount" width="220" align="center">
+              <template #default="scope">
+                <div v-if="scope.row.amount !== undefined && scope.row.amount !== null">
+                  <span style="color: #409EFF; font-weight: bold; font-size: 18px;">
+                    ￥{{ Number(scope.row.amount).toFixed(2) }}
+                  </span>
+                </div>
+                <div v-else>
+                  <dict-tag :customTags="[{ label: '请输入数量和单价', type: 'info' }]"
+                  ></dict-tag>
+                </div>
+                <!-- <el-input-number
                   v-model="scope.row.amount"
                   placeholder="金额"
                   :precision="3"
                   :min="0"
                   :max="2147483647"
-                ></el-input-number>
+                ></el-input-number> -->
               </template>
             </el-table-column>
             <el-table-column label="操作" width="100" align="right" fixed="right">
