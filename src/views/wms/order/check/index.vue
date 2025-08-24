@@ -142,7 +142,7 @@
 <script setup name="CheckOrder">
 import {listCheckOrder, delCheckOrder, getCheckOrder} from "@/api/wms/checkOrder";
 import {listByCheckOrderId} from "@/api/wms/checkOrderDetail";
-import {getCurrentInstance, reactive, ref, toRefs} from "vue";
+import {getCurrentInstance, reactive, ref, toRefs, onMounted, onBeforeUnmount} from "vue";
 import {useWmsStore} from "../../../../store/modules/wms";
 import {ElMessageBox} from "element-plus";
 import checkPanel from "@/components/PrintTemplate/check-panel";
@@ -267,7 +267,34 @@ async function handlePrint(row) {
 function getRowKey(row) {
   return row.id
 }
+
+// 键盘事件处理
+const handleKeydown = (e) => {
+  if (e.key === 'ArrowLeft') {
+    // 上一页
+    if (queryParams.value.pageNum > 1) {
+      queryParams.value.pageNum--
+      getList()
+    }
+  } else if (e.key === 'ArrowRight') {
+    // 下一页
+    const maxPage = Math.ceil(total.value / queryParams.value.pageSize)
+    if (queryParams.value.pageNum < maxPage) {
+      queryParams.value.pageNum++
+      getList()
+    }
+  }
+}
+
 getList();
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 </script>
 <style lang="scss">
 .el-statistic__content {

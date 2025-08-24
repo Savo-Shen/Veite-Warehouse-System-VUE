@@ -391,7 +391,7 @@
 
 <script setup name="Item">
 import {getItem, delItem, addItem, updateItem} from '@/api/wms/item';
-import {computed, getCurrentInstance, nextTick, onMounted, reactive, ref, toRefs} from 'vue';
+import {computed, getCurrentInstance, nextTick, onMounted, onBeforeUnmount, reactive, ref, toRefs} from 'vue';
 import {ElForm, ElTree, ElTreeSelect} from 'element-plus';
 import {
   updateItemCategory,
@@ -838,7 +838,27 @@ const getVolumeText = (itemSku) => {
     + ((itemSku.width || itemSku.width === 0) ? (' 宽：' + itemSku.width) : '')
     + ((itemSku.height || itemSku.height === 0) ? (' 高：' + itemSku.height) : '')
 }
+
+// 键盘事件处理
+const handleKeydown = (e) => {
+  if (e.key === 'ArrowLeft') {
+    // 上一页
+    if (queryParams.value.pageNum > 1) {
+      queryParams.value.pageNum--
+      getList()
+    }
+  } else if (e.key === 'ArrowRight') {
+    // 下一页
+    const maxPage = Math.ceil(total.value / queryParams.value.pageSize)
+    if (queryParams.value.pageNum < maxPage) {
+      queryParams.value.pageNum++
+      getList()
+    }
+  }
+}
+
 onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
   nextTick(()=>{
     getList();
     if (route.query.openDrawer) {
@@ -846,6 +866,10 @@ onMounted(() => {
     }
   })
 });
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 </script>
 <style>
 .custom-tree-node {
