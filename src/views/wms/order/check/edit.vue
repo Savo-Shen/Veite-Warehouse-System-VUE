@@ -101,6 +101,23 @@
                 </template>
               </template>
             </el-table-column>
+            <el-table-column label="位置">
+              <template #default="{ row }">
+                <!-- <div>{{ row }}</div> -->
+                <dict-tag v-if="!row.location"
+                :customTags="[
+                  { label: '暂无位置', type: 'info' }
+                ]"
+              />
+              <div v-else>
+                <dict-tag :customTags="[
+                  { label: row.location.locationCode, type: '' }
+                ]"
+                />
+                <div>{{ row.location.locationName }}</div>
+              </div>
+              </template>
+            </el-table-column>
             <el-table-column label="账面库存" align="right" width="150">
               <template #default="{ row }">
                 <el-statistic :value="Number(row.quantity)" :precision="0"/>
@@ -228,6 +245,7 @@ const startCheck = () => {
         form.value.details.unshift({
             itemSku: it.itemSku,
             item: it.item,
+            location: it.location,
             inventoryId: it.id,
             skuId: it.itemSku.id,
             warehouseId: it.warehouseId,
