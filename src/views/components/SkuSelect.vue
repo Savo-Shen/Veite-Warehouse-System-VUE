@@ -1,85 +1,116 @@
 <template>
   <el-drawer :model-value="show" title="商品选择" @close="handleCancelClick" :size="size" :close-on-click-modal="false" append-to-body>
-        <el-form :inline="true" label-width="68px" @keyup.enter.native="loadAll">
-          <el-row :gutter="20">
-            <el-col :span="8">
-              <el-form-item label="商品名称">
-                <el-input v-model="query.itemName" clearable placeholder="商品名称"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="商品编号">
-                <el-input class="w200" v-model="query.itemCode" clearable placeholder="商品编号"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="规格名称">
-                <el-input class="w200" v-model="query.skuName" clearable placeholder="规格名称"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="8">
-              <el-form-item label="规格编号">
-                <el-input class="w200" v-model="query.barcode" clearable placeholder="规格编号"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-button type="primary" @click="loadAll">查询</el-button>
-            </el-col>
-          </el-row>
-        </el-form>
-            <el-table :data="list" @selection-change="handleSelectionChange" border :row-key="getRowKey" empty-text="暂无商品" v-loading="loading" ref="skuSelectFormRef" cell-class-name="my-cell">
-              <el-table-column type="selection" width="55" :reserve-selection="true" v-if="!singleSelect" :selectable="judgeSelectable"/>
-              <el-table-column label="商品信息" prop="itemId">
-                <template #default="{ row }">
-                  <div>{{ row.item.itemName }}</div>
-                  <div v-if="row.item.itemCode">编号：{{ row.item.itemCode }}</div>
-                  <div v-if="row.item.itemBrand">品牌：{{ useWmsStore().itemBrandMap.get(row.item.itemBrand).brandName }}</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="规格信息">
-                <template #default="{ row }">
-                  <div>{{ row.itemSku.skuName }}</div>
-                  <div v-if="row.itemSku.skuCode">编号：{{ row.itemSku.skuCode }}</div>
-                  <div v-if="row.itemSku.barcode">条码：{{ row.itemSku.barcode }}</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="价格(元)" width="160" align="left">
-                <template #default="{ row }">
-                  <div v-if="row.itemSku.costPrice" class="flex-space-between">
-                    <span>成本价：</span>
-                    <div>{{ (row.itemSku.costPrice || row.itemSku.costPrice === 0) ? row.itemSku.costPrice : '' }}</div>
-                  </div>
-                  <div v-if="row.itemSku.sellingPrice" class="flex-space-between">
-                    <span>销售价：</span>
-                    <div>{{ (row.itemSku.sellingPrice || row.itemSku.sellingPrice === 0) ? row.itemSku.sellingPrice : '' }}</div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column label="重量(kg)" width="160" align="left">
-                <template #default="{ row }">
-                  <div v-if="row.itemSku.netWeight" class="flex-space-between">
-                    <span>净重：</span>
-                    <div>{{ (row.itemSku.netWeight || row.itemSku.netWeight === 0) ? row.itemSku.netWeight : '' }}</div>
-                  </div>
-                  <div v-if="row.itemSku.grossWeight" class="flex-space-between">
-                    <span>毛重：</span>
-                    <div>{{ (row.itemSku.grossWeight || row.itemSku.grossWeight === 0) ? row.itemSku.grossWeight : '' }}</div>
-                  </div>
-                </template>
-              </el-table-column>
-              <el-table-column label="长宽高(cm)" align="right" width="250">
-                <template #default="{ row }">
-                  <div>{{ getVolumeText(row) }}</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" width="100" v-if="singleSelect" align="right">
-                <template #default="{ row }">
-                  <el-button link type="primary" @click="handleChooseSku(row)">选择</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+    <el-form :model="query" ref="queryFormRef" :inline="true" label-width="70px" @submit.prevent @keyup.enter="loadAll">
+      <div style="display: flex;">
+        <el-form-item label="智能搜索" style="flex: 1;">
+          <el-input v-model="query.itemKeywords" clearable placeholder="输入商品或规格名称"/>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="Search" @click="loadAll">搜索</el-button>
+          <el-button type="text" @click="showSearch = !showSearch">
+            <span v-if="showSearch">收起高级搜索</span>
+            <span v-else>展开高级搜索</span>
+        </el-button>
+        </el-form-item>
+      </div>
+      <el-collapse-transition>
+        <div v-if="showSearch">
+          <el-form-item label="商品名称" prop="itemName">
+            <el-input v-model="query.itemName" placeholder="请输入商品名称" clearable/>
+          </el-form-item>
+          <el-form-item label="商品规格" prop="skuName">
+            <el-input v-model="query.skuName" placeholder="请输入商品规格" clearable/>
+          </el-form-item>
+          <el-form-item label="商品品牌" prop="itemBrand">
+            <el-select v-model="query.itemBrand" clearable filterable>
+              <el-option
+                v-for="item in useWmsStore().itemBrandList"
+                :key="item.id"
+                :label="item.brandName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="商品位置" prop="itemLocationId">
+            <el-select v-model="query.itemLocationId" clearable filterable>
+              <el-option
+                v-for="item in useWmsStore().locationList"
+                :key="item.id"
+                :label="item.locationCode + ' (' + item.locationName + ')'"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </div>
+      </el-collapse-transition>
+    </el-form>
+    <el-table :data="list" @selection-change="handleSelectionChange" border :row-key="getRowKey" empty-text="暂无商品" v-loading="loading" ref="skuSelectFormRef" cell-class-name="my-cell">
+      <el-table-column type="selection" width="55" :reserve-selection="true" v-if="!singleSelect" :selectable="judgeSelectable"/>
+      <el-table-column label="商品信息" prop="itemId">
+        <template #default="{ row }">
+          <div>{{ row.item.itemName }}</div>
+          <div v-if="row.item.itemCode">编号：{{ row.item.itemCode }}</div>
+          <div v-if="row.item.itemBrand">品牌：{{ useWmsStore().itemBrandMap.get(row.item.itemBrand).brandName }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="规格信息">
+        <template #default="{ row }">
+          <div>{{ row.itemSku.skuName }}</div>
+          <div v-if="row.itemSku.skuCode">编号：{{ row.itemSku.skuCode }}</div>
+          <div v-if="row.itemSku.barcode">条码：{{ row.itemSku.barcode }}</div>
+        </template>
+      </el-table-column>
+       <el-table-column label="位置信息" prop="locationId">
+        <template #default="{ row }">
+          <dict-tag v-if="!row.location"
+            :customTags="[
+              { label: '暂无位置', type: 'info' }
+            ]"
+          />
+          <div v-else>
+            <dict-tag :customTags="[
+              { label: row.location.locationCode, type: 'primary' }
+            ]"
+            />
+            <div>{{ row.location.locationName }}</div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="价格(元)" width="160" align="left">
+        <template #default="{ row }">
+          <div v-if="row.itemSku.costPrice" class="flex-space-between">
+            <span>成本价：</span>
+            <div>{{ (row.itemSku.costPrice || row.itemSku.costPrice === 0) ? row.itemSku.costPrice : '' }}</div>
+          </div>
+          <div v-if="row.itemSku.sellingPrice" class="flex-space-between">
+            <span>销售价：</span>
+            <div>{{ (row.itemSku.sellingPrice || row.itemSku.sellingPrice === 0) ? row.itemSku.sellingPrice : '' }}</div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="重量(kg)" width="160" align="left">
+        <template #default="{ row }">
+          <div v-if="row.itemSku.netWeight" class="flex-space-between">
+            <span>净重：</span>
+            <div>{{ (row.itemSku.netWeight || row.itemSku.netWeight === 0) ? row.itemSku.netWeight : '' }}</div>
+          </div>
+          <div v-if="row.itemSku.grossWeight" class="flex-space-between">
+            <span>毛重：</span>
+            <div>{{ (row.itemSku.grossWeight || row.itemSku.grossWeight === 0) ? row.itemSku.grossWeight : '' }}</div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="长宽高(cm)" align="right" width="250">
+        <template #default="{ row }">
+          <div>{{ getVolumeText(row) }}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="100" v-if="singleSelect" align="right">
+        <template #default="{ row }">
+          <el-button link type="primary" @click="handleChooseSku(row)">选择</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <el-row>
       <pagination v-show="total > 0" :total="total" :page-sizes="[5, 10, 20, 50]" v-model:limit="pageReq.size" v-model:page="pageReq.page"
                   @pagination="getList" class="mr10"/>
@@ -99,7 +130,7 @@
   </el-drawer>
 </template>
 <script setup lang="ts" name="SkuSelect">
-import {computed, getCurrentInstance, onMounted, reactive, ref} from 'vue';
+import {computed, getCurrentInstance, onMounted, onBeforeUnmount, reactive, ref} from 'vue';
 import {ElForm} from "element-plus";
 import {listItemSkuPage} from "@/api/wms/itemSku";
 import {useRouter} from "vue-router";
@@ -109,6 +140,7 @@ const { proxy } = getCurrentInstance()
 
 const router = useRouter()
 const loading = ref(false)
+const showSearch = ref(false);
 const deptOptions = ref([]);
 const query = reactive({
   itemName: '',
@@ -234,9 +266,38 @@ const getVolumeText = (row) => {
     + ((row.width || row.width === 0) ? (' 宽：' + row.width) : '')
     + ((row.height || row.height === 0) ? (' 高：' + row.height) : '')
 }
+
+// 键盘事件处理
+const handleKeydown = (e) => {
+  if (e.key === 'ArrowLeft') {
+    // 上一页
+    if (pageReq.page > 1) {
+      pageReq.page--
+      getList()
+    }
+  } else if (e.key === 'ArrowRight') {
+    // 下一页
+    const maxPage = Math.ceil(total.value / pageReq.size)
+    if (pageReq.page < maxPage) {
+      pageReq.page++
+      getList()
+    }
+  }
+}
+
 defineExpose({
   getList
 })
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+  loadAll();
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
+
 </script>
 <style lang="scss">
 .el-table .my-cell {
