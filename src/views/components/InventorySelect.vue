@@ -1,22 +1,50 @@
 <template>
   <el-drawer :model-value="show" title="选择库存" @close="handleCancelClick" :size="size" :close-on-click-modal="false"
              append-to-body>
-    <el-form :inline="true" label-width="68px" @keyup.enter.native="loadAll">
-      <el-form-item label="商品名称">
-        <el-input v-model="query.itemName" clearable placeholder="商品名称"></el-input>
-      </el-form-item>
-      <el-form-item label="商品编号">
-        <el-input class="w200" v-model="query.itemCode" clearable placeholder="商品编号"></el-input>
-      </el-form-item>
-      <el-form-item label="规格名称">
-        <el-input class="w200" v-model="query.skuName" clearable placeholder="规格名称"></el-input>
-      </el-form-item>
-      <el-form-item label="规格编号">
-        <el-input class="w200" v-model="query.barcode" clearable placeholder="规格编号"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="loadAll">查询</el-button>
-      </el-form-item>
+    <el-form :model="query" ref="queryFormRef" :inline="true" label-width="70px" @submit.prevent @keyup.enter="loadAll">
+      <div style="display: flex;">
+        <el-form-item label="智能搜索" style="flex: 1;">
+          <el-input v-model="query.itemKeywords" clearable placeholder="输入商品或规格名称"/>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="Search" @click="loadAll">搜索</el-button>
+          <el-button type="text" @click="showSearch = !showSearch">
+            <span v-if="showSearch">收起高级搜索</span>
+            <span v-else>展开高级搜索</span>
+        </el-button>
+        </el-form-item>
+      </div>
+      <el-collapse-transition>
+        <div v-if="showSearch">
+          <el-form-item label="商品名称" prop="itemName">
+            <el-input v-model="query.itemName" placeholder="请输入商品名称" clearable/>
+          </el-form-item>
+          <el-form-item label="商品规格" prop="skuName">
+            <el-input v-model="query.skuName" placeholder="请输入商品规格" clearable/>
+          </el-form-item>
+          <el-form-item label="商品品牌" prop="itemBrand">
+            <el-select v-model="query.itemBrand" clearable filterable>
+              <el-option
+                v-for="item in useWmsStore().itemBrandList"
+                :key="item.id"
+                :label="item.brandName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="商品位置" prop="itemLocationId">
+            <el-select v-model="query.itemLocationId" clearable filterable>
+              <el-option
+                v-for="item in useWmsStore().locationList"
+                :key="item.id"
+                :label="item.locationCode + ' (' + item.locationName + ')'"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </div>
+      </el-collapse-transition>
+      
     </el-form>
     <el-table :data="list" @selection-change="handleSelectionChange" border stripe :row-key="getRowKey" empty-text="暂无库存"
               v-loading="loading" ref="inventorySelectFormRef" cell-class-name="my-cell" class="mt20">
@@ -39,6 +67,22 @@
         <template #default="{ row }">
           <div v-if="row.itemSku.sellingPrice">{{ row.itemSku.sellingPrice }}</div>
           <div v-else>暂无售价</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="位置信息" prop="locationId">
+        <template #default="{ row }">
+          <dict-tag v-if="!row.location"
+            :customTags="[
+              { label: '暂无位置', type: 'info' }
+            ]"
+          />
+          <div v-else>
+            <dict-tag :customTags="[
+              { label: row.location.locationCode, type: 'primary' }
+            ]"
+            />
+            <div>{{ row.location.locationName }}</div>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="剩余库存" prop="quantity" align="right">
@@ -71,7 +115,7 @@
   </el-drawer>
 </template>
 <script setup name="InventorySelect">
-import {computed, getCurrentInstance, nextTick, onMounted, reactive, ref, watch} from 'vue';
+import {computed, getCurrentInstance, nextTick, onMounted, onBeforeUnmount, reactive, ref, watch} from 'vue';
 import {ElForm} from "element-plus";
 import {getRowspanMethod} from "@/utils/getRowSpanMethod";
 import {useRouter} from "vue-router";
@@ -84,6 +128,7 @@ const {proxy} = getCurrentInstance()
 const spanMethod = computed(() => getRowspanMethod(list.value, ['itemId']))
 const router = useRouter()
 const loading = ref(false)
+const showSearch = ref(false);
 const deptOptions = ref([]);
 const query = reactive({
   itemName: '',
@@ -92,7 +137,9 @@ const query = reactive({
   skuCode: '',
   minQuantity: 1,
   areaId: null,
-  warehouseId: null
+  warehouseId: null,
+  itemLocationId: undefined,
+  itemKeywords: undefined,
 });
 const selectInventoryVoCheck = ref([])
 const inventorySelectFormRef = ref(null)
@@ -199,13 +246,38 @@ const setWarehouseId = (warehouseId = null) => {
   query.warehouseId = warehouseId
 }
 
+// 键盘事件处理
+const handleKeydown = (e) => {
+  if (e.key === 'ArrowLeft') {
+    // 上一页
+    if (pageReq.page > 1) {
+      pageReq.page--
+      getList()
+    }
+  } else if (e.key === 'ArrowRight') {
+    // 下一页
+    const maxPage = Math.ceil(total.value / pageReq.size)
+    if (pageReq.page < maxPage) {
+      pageReq.page++
+      getList()
+    }
+  }
+}
+
 defineExpose({
   setWarehouseId,
   getList
 })
+
 onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
   loadAll();
 })
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
+
 </script>
 <style lang="scss">
 .el-table .my-cell {
