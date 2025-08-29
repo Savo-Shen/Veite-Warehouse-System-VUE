@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="70px">
         <el-form-item label="品牌名称" prop="brandName">
           <el-input
             v-model="queryParams.brandName"

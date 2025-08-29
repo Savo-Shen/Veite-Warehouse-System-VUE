@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="70px">
         <el-form-item label="位置名称" prop="locationName">
           <el-input
             v-model="queryParams.locationName"

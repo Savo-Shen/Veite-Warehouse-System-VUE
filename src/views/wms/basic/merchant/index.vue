@@ -18,7 +18,7 @@
             @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="企业类型" prop="merchantType">
+        <el-form-item label="企业类型" label-width="70px" prop="merchantType">
           <el-select v-model="queryParams.merchantType" placeholder="请选择企业类型" clearable>
             <el-option
               v-for="dict in merchant_type"
