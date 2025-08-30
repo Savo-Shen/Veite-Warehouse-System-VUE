@@ -150,7 +150,7 @@
           <template #default="{ row }">
             <el-tag
               class="inventory-tag"
-              :type="row.quantity === 0 
+              :type="row.quantity == 0 
                         ? 'info' 
                         : row.quantity <= 5 
                           ? 'danger' 
