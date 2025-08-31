@@ -70,7 +70,7 @@ const queryParams = ref({
   pageNum: 1,
   pageSize: 10,
   orderId: null,
-  haveProfitAndLoss: false,
+  haveProfitAndLoss: true,
 });
 const total = ref(0)
 const loading = ref(false)
