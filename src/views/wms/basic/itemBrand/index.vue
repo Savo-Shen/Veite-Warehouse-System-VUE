@@ -1,13 +1,12 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="70px">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="70px" @submit.prevent @keyup.enter="handleQuery">
         <el-form-item label="品牌名称" prop="brandName">
           <el-input
             v-model="queryParams.brandName"
             placeholder="请输入品牌名称"
             clearable
-            @keyup.enter="handleQuery"
           />
         </el-form-item>
         <el-form-item>
@@ -46,7 +45,7 @@
     </el-card>
     <!-- 添加或修改商品品牌对话框 -->
     <el-drawer :title="title" v-model="open" size="50%" append-to-body>
-      <el-form ref="itemBrandRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="itemBrandRef" :model="form" :rules="rules" label-width="80px" @submit.prevent @keyup.enter="submitForm">
         <el-form-item label="品牌名称" prop="brandName">
           <el-input v-model="form.brandName" placeholder="请输入品牌名称" />
         </el-form-item>
@@ -101,7 +100,7 @@ async function getList() {
   await useWmsStore().getItemBrandList()
   let list = [...useWmsStore().itemBrandList]
   if (queryParams.value.brandName) {
-    list = list.filter(it => it.brandName === queryParams.value.brandName)
+      list = list.filter(it => it.brandName.includes(queryParams.value.brandName))
   }
   itemBrandList.value = list;
   loading.value = false;
