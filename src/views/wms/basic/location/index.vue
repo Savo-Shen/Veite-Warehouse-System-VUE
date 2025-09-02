@@ -1,13 +1,12 @@
 <template>
   <div class="app-container">
     <el-card>
-      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="70px">
-        <el-form-item label="位置名称" prop="locationName">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="70px" @submit.prevent @keyup.enter="handleQuery">
+        <el-form-item label="位置名称" prop="keywords">
           <el-input
-            v-model="queryParams.locationName"
+            v-model="queryParams.keywords"
             placeholder="请输入位置名称"
             clearable
-            @keyup.enter="handleQuery"
           />
         </el-form-item>
         <el-form-item>
@@ -47,7 +46,7 @@
     </el-card>
     <!-- 添加或修改商品位置对话框 -->
     <el-drawer :title="title" v-model="open" size="50%" append-to-body>
-      <el-form ref="locationRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="locationRef" :model="form" :rules="rules" label-width="80px" @submit.prevent @keyup.enter="submitForm">
         <el-form-item label="位置编码" prop="locationCode">
           <el-input v-model="form.locationCode" placeholder="请输入位置编码" />
         </el-form-item>
@@ -90,7 +89,8 @@ const data = reactive({
     pageSize: 10,
     locationName: undefined,
     locationCode: undefined,
-    remark: undefined
+    remark: undefined,
+    keywords: undefined
   },
   rules: {
     locationName: [
@@ -111,8 +111,8 @@ async function getList() {
   await store.getLocationList()
 
   let list = [...store.locationList]
-  if (queryParams.value.locationName) {
-    list = list.filter(it => it.locationName === queryParams.value.locationName)
+  if (queryParams.value.keywords) {
+    list = list.filter(it => it.locationName.includes(queryParams.value.keywords) || it.locationCode.includes(queryParams.value.keywords) || (it.remark && it.remark.includes(queryParams.value.keywords)))
   }
   locationList.value = list;
   loading.value = false;
